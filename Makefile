@@ -4,7 +4,7 @@ LINKER     = gfortran
 CCFLAGS    = -O1 -mavx #-Q --help=optimizers
 LDFLAGS    = 
 
-LAPACKHOME = /home/fgsong/lapack-3.8.0
+LAPACKHOME = /home/jascho/lapack-3.8.0
 INCPATH    =  -I$(LAPACKHOME)/CBLAS/include
 LIBS       =  -L$(LAPACKHOME) -lcblas -lrefblas 
 
