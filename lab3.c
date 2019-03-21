@@ -15,13 +15,24 @@ int main()
 	double* matrixD [randc*randc];
 	init_matrix(randc, matrixA);
 	init_matrix(randc, matrixB);
+	double t0=get_cur_time();
 	sse_dgemm(randc, matrixA, matrixB, matrixC);
+	double t1=get_cur_time();
+	double sse_Execution=t1-t0;
+	t0=get_cur_time();
+	unoptimized_dgemm(randc,matrixA,matrixB,matrixC);
+	t1=get_cur_time();
+	double uno_Execution=t1-t0;
 	cblas_dgemm(CblasColMajor,CblasNoTrans,CblasNoTrans,randc,randc,randc,aandb,matrixA,randc,matrixB,randc,aandb,matrixD,randc);
 	compare_matrix (randc, matrixC, matrixD);
+	printf("The improved dgemm's execution time is ");
+	printf("%lf",sse_Execution);
+	printf("The old dgemm's execution is ");
+	printf("%lf",uno_Execution);
 	return 0;
 }
 
-void compaare_matrix(int n, double* A1, double* A2){
+void compare_matrix(int n, double* A1, double* A2){
 	int i, j;
 	double d1, d2;
 	for (i=0;i<n;i++){
@@ -39,10 +50,10 @@ void compaare_matrix(int n, double* A1, double* A2){
 
 void init_matrix(int n, double* A){
 	int i,j;
-	int RAND_MAX=5;
+	int constant=5; //problem lies here
 	for (i=0;i<n;i++){
 		for(j=0;j<n;j++){
-			*(A + i*n +j)= rand() / (RAND_MAX * 1.0);
+			*(A + i*n +j)= rand() / (constant * 1.0);
 		}
 	}
 }
