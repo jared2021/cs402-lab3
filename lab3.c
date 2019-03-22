@@ -13,70 +13,48 @@ int main()
 	size_t squared= randc*randc*sizeof(double); //change back to int if having problems?
 	size_t thirty_two=32;
 	size_t zero=0;
+	int doubled=randc*randc;
 	printf("Initialized non-matrix variables.\n");
 
-	double* matrixA[randc*randc];
-	int posix_mamalign(void** matrixA,size_t thirty_two,size_t squared);
-	printf("Initialzed matrixA.\n");
-	double* matrixB[randc*randc];
-	int posix_mamalign(void** matrixB,size_t thirty_two,size_t squared);
+	double* matrixA[doubled];
+	int posix_mamalign(double*matrixA,size_t thirty_two,size_t squared);
+	printf("Initialzed MatrixA.\n");
+	double* matrixB[doubled];
+	int posix_mamalign(double*matrixB,size_t thirty_two,size_t squared);
 	printf("initialized matrixB.\n");
-	double* matrixC[randc*randc];
-	int posix_mamalign(void** matrixC,size_t thirty_two,size_t squared);
+	double* matrixC[doubled];
+	int posix_mamalign(double*matrixC,size_t thirty_two,size_t squared);
 	printf("initilized matrixC.\n");
-	//double* matrixD[randc*randc];
-	//int posix_mamalign(void** matrixD,size_t thirty_two,size_t squared);
-	//printf("initiialized matrixD.\n");
-	//double* matrixE[randc*randc];
-	//printf("Created variable matrixE.\n");
-	int posix_mamalign(void** matrixE,size_t thirty_two,size_t squared);
+	double* matrixD[doubled];
+	int posix_mamalign(double*matrixD,size_t thirty_two,size_t squared);
+	printf("initiialized matrixD.\n");
+	double* matrixE[doubled];
+	printf("Created variable matrixE.\n");
+	int posix_mamalign(double*matrixE,size_t thirty_two,size_t squared);
 	printf("Initialized all variables.\n");
-
-	//int posix_memalign(void** matrixA,size_t thirty_two,size_t squared);
-	//int posix_mamalign(void** matrixB,size_t thirty_two,size_t squared);
-	//int posix_mamalign(void** matrixC,size_t thirty_two,size_t squared);
-	//int posix_mamalign(void** matrixD,size_t thrity_two,size_t squared);
-	//int posix_mamalign(void** matrixE,size_t thirty_two,size_t squared);
 
 	init_matrix(randc, matrixA);
 	init_matrix(randc, matrixB);
 
-	printf("Would you like to run the 0)original dgemm or the 1) updated dgemm?\n");
-	int option;
-	scanf("%d",option);
-	if(option==1)
-	{
-		double t0=get_cur_time();
-		sse_dgemm(randc, matrixA, matrixB, matrixC);
-		double t1=get_cur_time();
-		double sse_Execution=t1-t0;
-		double sse_Gflops= 2*pow(randc,3)/(sse_Execution*pow(10,9));
-		printf("The improved dgemm's Gflops is ");
-		printf("%lf",sse_Gflops);
-	}
-	if(option==0)
-	{
-		double t3=get_cur_time();
-		unoptimized_dgemm(randc,matrixA,matrixB,matrixC);
-		double t4=get_cur_time();
-		double uno_Execution=t4-t3;
-		double uno_Gflops=2*pow(randc,3)/(uno_Execution*pow(10,9));
-		printf("The old dgemm's Gflops is ");
-		printf("%lf",uno_Gflops);
-	}
-	if(option==1)
-	{
-		double* matrixD[randc*randc];
-		int posix_mamalign(void** matrixD,size_t thirty_two,size_t squared);
-		cblas_dgemm(CblasColMajor,CblasNoTrans,CblasNoTrans,randc,randc,randc,aandb,matrixA,randc,matrixB,randc,aandb,matrixD,randc);
-		compare_matrix (randc, matrixC, matrixD);
-	}
-	//double uno_Gflops= 2*pow(randc,3)/ (uno_Execution*pow(10,9));
-	//printf("The improved dgemm's Gflops is ");
-	//printf("%lf",sse_Gflops);
-	//printf("The old dgemm's Gflops is ");
-	//printf("%lf",uno_Gflops);
+	double t0=get_cur_time();
+	sse_dgemm(randc, matrixA, matrixB, matrixC);
+	double t1=get_cur_time();
+	double sse_Execution=t1-t0;
+
+	double t3=get_cur_time();
+	unoptimized_dgemm(randc,matrixA,matrixB,matrixD);
+	double t4=get_cur_time();
+	double uno_Execution=t4-t3;
 	
+	cblas_dgemm(CblasColMajor,CblasNoTrans,CblasNoTrans,randc,randc,randc,aandb,matrixA,randc,matrixB,randc,aandb,matrixE,randc);
+	compare_matrix (randc, matrixC, matrixE);
+	
+	double sse_Gflops= 2*pow(randc,3)/(sse_Execution*pow(10,9));
+	double uno_Gflops= 2*pow(randc,3)/ (uno_Execution*pow(10,9));
+	printf("The improved dgemm's Gflops is ");
+	printf("%lf",sse_Gflops);
+	printf("The old dgemm's Gflops is ");
+	printf("%lf",uno_Gflops);
 	return 0;
 }
 
@@ -98,7 +76,7 @@ void compare_matrix(int n, double* A1, double* A2){
 
 void init_matrix(int n, double* A){
 	int i,j;
-	int constant=5; 
+	int constant=3; 
 	for (i=0;i<n;i++){
 		for(j=0;j<n;j++){
 			*(A + i*n +j)= rand() / (constant * 1.0);
