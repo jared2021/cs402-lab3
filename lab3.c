@@ -15,21 +15,21 @@ int main()
 	int doubled=randc*randc;
 	printf("Initialized non-matrix variables.\n");
 
-	double* matrixA[doubled];
-	int posix_mamalign(double*matrixA,size_t thirty_two,size_t squared);
+	double* matrixA;
+	posix_memalign((void**)&matrixA,thirty_two,squared);
 	printf("Initialzed MatrixA.\n");
-	double* matrixB[doubled];
-	int posix_mamalign(double*matrixB,size_t thirty_two,size_t squared);
+	double* matrixB;
+	posix_memalign((void**)&matrixB,thirty_two,squared);
 	printf("initialized matrixB.\n");
-	double* matrixC[doubled];
-	int posix_mamalign(double*matrixC,size_t thirty_two,size_t squared);
+	double* matrixC;
+	posix_memalign((void**)&matrixC,thirty_two,squared);
 	printf("initilized matrixC.\n");
-	double* matrixD[doubled];
-	int posix_mamalign(double*matrixD,size_t thirty_two,size_t squared);
+	double* matrixD;
+	posix_memalign((void**)&matrixD,thirty_two,squared);
 	printf("initiialized matrixD.\n");
-	double* matrixE[doubled];
+	double* matrixE;
 	printf("Created variable matrixE.\n");
-	int posix_mamalign(double*matrixE,size_t thirty_two,size_t squared);
+	posix_memalign((void**)&matrixE,thirty_two,squared);
 	printf("Initialized all variables.\n");
 
 	init_matrix(randc, matrixA);
@@ -49,7 +49,7 @@ int main()
 	compare_matrix (randc, matrixC, matrixE);
 	
 	double sse_Gflops= 2*pow(randc,3)/(sse_Execution*pow(10,9));
-	double uno_Gflops= 2*pow(randc,3)/ (uno_Execution*pow(10,9));
+	double uno_Gflops= 2*pow(randc,3)/(uno_Execution*pow(10,9));
 	printf("The improved dgemm's Gflops is ");
 	printf("%lf",sse_Gflops);
 	printf("The old dgemm's Gflops is ");
