@@ -12,7 +12,6 @@ int main()
 	const double aandb=1.0;
 	size_t squared= randc*randc*sizeof(double); //change back to int if having problems?
 	size_t thirty_two=32;
-	size_t zero=0;
 	int doubled=randc*randc;
 	printf("Initialized non-matrix variables.\n");
 
@@ -76,7 +75,7 @@ void compare_matrix(int n, double* A1, double* A2){
 
 void init_matrix(int n, double* A){
 	int i,j;
-	int constant=3; 
+	int constant=5; 
 	for (i=0;i<n;i++){
 		for(j=0;j<n;j++){
 			*(A + i*n +j)= rand() / (constant * 1.0);
